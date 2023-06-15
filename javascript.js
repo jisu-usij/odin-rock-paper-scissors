@@ -12,6 +12,44 @@ function getComputerChoice() {
   }
 }
 
+function game() {
+  let playerScore = 0;
+  let computerScore = 0;
+  
+  for (let i = 0; i < 5; i++) {
+    const playerInput = prompt("Please enter 'Rock', 'Paper', or 'Scissors' (case insensitive):");
+    const result = playRound(playerInput, getComputerChoice());
+
+    if (result.startsWith("You win")) {
+      playerScore++;
+    }
+    else if (result.startsWith("You lose")) {
+      computerScore++;
+    }
+    
+    console.log(`<< Round ${i + 1} of 5 >>
+    ${result}
+    Your score: ${playerScore}
+    Computer's score: ${computerScore}`);
+
+    if (result === "Invalid input.") {
+      console.log("An invalid input was entered. There is no winner this round, and this round does not count as one of the 5 rounds in the game.");
+      // Decrement for loop counter to invalidate this round due to invalid user input.
+      i--;
+    }
+  }
+
+  if (playerScore > computerScore) {
+    console.log("Congratulations, you won the game!");
+  }
+  else if (playerScore < computerScore) {
+    console.log("Oh no, you lost! Better luck next time.");
+  }
+  else /* (playerScore === computerScore) */ {
+    console.log("It's a tie.");
+  }
+}
+
 function playRound(playerSelection, computerSelection) {
   const playerInput = playerSelection.trim().toLowerCase();
   if (playerInput === "rock") {
@@ -24,7 +62,7 @@ function playRound(playerSelection, computerSelection) {
     return scissorsVersus(computerSelection);
   }
   else {
-    console.error("The player did not provide a valid input.");
+    return "Invalid input.";
   }
 }
 
