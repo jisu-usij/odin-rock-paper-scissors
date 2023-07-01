@@ -12,6 +12,7 @@ function getComputerChoice() {
   }
 }
 
+/* this function is no longer needed with the UI in place
 function game() {
   let playerScore = 0;
   let computerScore = 0;
@@ -45,10 +46,12 @@ function game() {
   else if (playerScore < computerScore) {
     console.log("Oh no, you lost! Better luck next time.");
   }
-  else /* (playerScore === computerScore) */ {
+  // (playerScore === computerScore)
+  else {
     console.log("It's a tie.");
   }
 }
+*/
 
 function playRound(playerSelection, computerSelection) {
   const playerInput = playerSelection.trim().toLowerCase();
@@ -105,9 +108,34 @@ function scissorsVersus(computerInput) {
   }
 }
 
+let playerScore = 0;
+let computerScore = 0;
+
 function playRoundEventHandler () {
-  console.log(playRound(this.textContent, getComputerChoice()));
+  const result = playRound(this.textContent, getComputerChoice());
+  resultDiv.textContent = result;
+
+  if (result.startsWith("You win")) {
+    scoreDiv.textContent = `You: ${++playerScore} Computer: ${computerScore}`;
+  }
+  else if (result.startsWith("You lose")) {
+    scoreDiv.textContent = `You: ${playerScore} Computer: ${++computerScore}`;
+  }
+
+  if (playerScore === 5 || computerScore === 5) {
+    buttons.forEach(button => button.removeEventListener('click', playRoundEventHandler));
+
+    const body = document.querySelector('body');
+    const winnerDiv = document.createElement('div');
+    winnerDiv.classList.add('winner');
+    winnerDiv.textContent = (playerScore === 5) ? `The player wins!` : `The computer wins!`;
+    body.appendChild(winnerDiv);
+  }
 }
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => button.addEventListener('click', playRoundEventHandler));
+
+const resultDiv = document.querySelector('div.result');
+
+const scoreDiv = document.querySelector('div.score');
