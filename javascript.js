@@ -104,3 +104,10 @@ function scissorsVersus(computerInput) {
       console.error("The computer played something other than 'Rock', 'Paper', or 'Scissors'.");
   }
 }
+
+function playRoundEventHandler () {
+  console.log(playRound(this.textContent, getComputerChoice()));
+}
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener('click', playRoundEventHandler));
